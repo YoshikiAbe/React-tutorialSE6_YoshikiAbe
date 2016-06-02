@@ -6,10 +6,11 @@ class CommentBox extends React.Component {
     super(props);
   }
 
+class CommentList extends React.Component {
   render() {
     return(
-      <div className='commentBox'>
-        こんにちは, 世界！ 私はコメントボックス。
+      <div className='commentList'>
+        Hello, World! I am a CommentList.
       </div>
     );
   }
