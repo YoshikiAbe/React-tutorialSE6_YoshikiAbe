@@ -36,7 +36,7 @@ gulp.task('build', function() {
 
 //ローカルサーバーの起動
 gulp.task('server', function() {
-  node('./server.js', [], []);
+  node(['./server.js'],[],[]);
 });
 
 //ファイル監視
