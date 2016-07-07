@@ -8,7 +8,7 @@ var node = require('node-dev');
 var source = require('vinyl-source-stream');
 
 function errorHandler(err) {
-  console.log('Error: ' + err.massage);
+  console.log('Error: ' + err);
 }
 
 // 自動ブラウザリロード
