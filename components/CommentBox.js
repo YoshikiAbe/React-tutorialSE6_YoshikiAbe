@@ -1,55 +1,70 @@
+import ReactDOM from 'react-dom';
 import React from 'react';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import $ from 'jquery';
 
 export default class CommentBox extends React.Component {
-    constructor(props) {
-        super(props)
+    constructor(props){
+        super(props);
         this.state = {
             data: []
         };
     }
 
-  loadCommentsFromServer() {
-    $.ajax({
-        url: this.props.url,
-        dataType: 'json',
-        cache: false,
-        success: (data) => { this.setState({data: data}); },
-        error: (xhr, status, err) => {
-            console.error(this.props.url, status, err.toString());
-      }
-    });
-  }
-
-    handleCommentSubmit(comment) {
-        var comments = this.state.data;
-        var newComments = comments.concat([comment]);
-        this.setState({data: newComments});
+    // コンポーネントがレンダリングされた時に自動で呼び出される
+    componentDidMount() {
         $.ajax({
             url: this.props.url,
             dataType: 'json',
-            type: 'POST',
-            data: comment,
+            cache: false,
             success: (data) => { this.setState({data: data}); },
             error: (xhr, status, err) => {
                 console.error(this.props.url, status, err.toString());
-        }
-    });
-}
+            }
+        });
+    }
 
-    componentDidMount() {
-        this.loadCommentsFromServer();
-        setInterval(this.loadCommentsFromServer.bind(this), this.props.pollInterval);
+    handleCommentSubmit(comment) {
+        $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            method: 'POST',
+            cache: false,
+            data: comment,
+            success: (data) => { this.setState({data: data}); },
+            error: (xhr, status, err) => {
+                console.error(this.props.url, status, err);
+            }
+        });
+    }
+
+    handleCommentDelete(comment) {
+        // TODO データの削除したいなあ
+        // const jsonData =  this.state.data;
+        // $.ajax({
+        //     url: this.props.url,
+        //     dataType: 'json',
+        //     method: 'GET',
+        //     cache: false,
+        //     data: comment,
+        //     success: (data) => { this.setState({data: jsonData.filter((jsonData) => {
+        //                 return comment.key !== jsonData.key;
+        //             })
+        //         });
+        //     },
+        //     error: (xhr, status, err) => {
+        //         console.error(this.props.url, status, err.toString());
+        //     }
+        // })
     }
 
     render() {
-        return(
+        return (
             <div className='commentBox'>
-                <h2>ツイート</h2>
-                <CommentList data={this.state.data} />
-                <CommentForm onCommentSubmit={this.handleCommentSubmit.bind(this)} />
+                <h2>コメント欄</h2>
+                <CommentForm data={this.state.data} onCommentSubmit={this.handleCommentSubmit.bind(this)} />
+                <CommentList data={this.state.data} onDelete={this.handleCommentDelete.bind(this)} />
             </div>
         );
     }
