@@ -41,22 +41,22 @@ export default class CommentBox extends React.Component {
 
     handleCommentDelete(comment) {
         // TODO データの削除したいなあ
-        // const jsonData =  this.state.data;
-        // $.ajax({
-        //     url: this.props.url,
-        //     dataType: 'json',
-        //     method: 'GET',
-        //     cache: false,
-        //     data: comment,
-        //     success: (data) => { this.setState({data: jsonData.filter((jsonData) => {
-        //                 return comment.key !== jsonData.key;
-        //             })
-        //         });
-        //     },
-        //     error: (xhr, status, err) => {
-        //         console.error(this.props.url, status, err.toString());
-        //     }
-        // })
+        const jsonData =  this.state.data;
+        $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            method: 'GET',
+            cache: false,
+            data: comment,
+            success: (data) => { this.setState({data: jsonData.filter((jsonData) => {
+                        return comment.key !== jsonData.key;
+                    })
+                });
+            },
+            error: (xhr, status, err) => {
+                console.error(this.props.url, status, err.toString());
+            }
+        })
     }
 
     render() {
